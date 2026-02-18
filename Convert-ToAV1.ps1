@@ -1,6 +1,6 @@
 # Video Conversion Script using Hardware GPU Encoder
 # Auto-detects best available encoder (AV1 preferred, HEVC fallback for Qualcomm)
-# Priority: NVIDIA AV1 > AMD AV1 > Intel AV1 > Qualcomm HEVC > Software AV1
+# Priority: NVIDIA AV1 > AMD AV1 > Intel AV1 > Microsoft MediaFoundation HEVC (Qualcomm HW) > Software AV1
 # Converts videos > 250MB, keeps original only if new file is larger
 # Skips already efficient codecs (HEVC, AV1, VP9)
 
@@ -272,7 +272,7 @@ function Get-BestAV1Encoder {
         },
         @{ 
             Name = "hevc_mf"
-            Type = "MediaFoundation HEVC (Qualcomm)"
+            Type = "Microsoft MediaFoundation HEVC (Qualcomm HW)"
             # HEVC hardware encoding for Snapdragon X Elite (no AV1 HW encode yet)
             Args = @("-c:v", "hevc_mf", "-rate_control", "quality", "-quality", "70")
             Codec = "HEVC"

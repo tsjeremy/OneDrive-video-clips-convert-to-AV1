@@ -6,7 +6,7 @@ Automatically convert large video files to AV1 or HEVC format to reduce OneDrive
 
 - Scans your OneDrive folder for video files larger than 250MB
 - Auto-detects the best available hardware encoder
-- Priority: NVIDIA AV1 > AMD AV1 > Intel AV1 > Qualcomm HEVC > Software AV1
+- Priority: NVIDIA AV1 > AMD AV1 > Intel AV1 > Microsoft MediaFoundation HEVC (Qualcomm HW) > Software AV1
 - Converts videos to the most efficient codec available on your hardware
 - Compares file sizes and only keeps the converted file if it is smaller
 - Preserves original filename (changes extension to `.mkv`)
@@ -39,7 +39,7 @@ Example: A 1GB H.264 video typically becomes 300-500MB in AV1.
 | NVIDIA RTX 30/40 series | NVENC | AV1 | Fastest |
 | AMD RX 6000/7000/8000 series | AMF | AV1 | Fast |
 | Intel Arc / 11th+ Gen iGPU | Quick Sync | AV1 | Fast |
-| Qualcomm Snapdragon X Elite | MediaFoundation | HEVC | Fast |
+| Microsoft MediaFoundation (uses Qualcomm HW on Snapdragon) | hevc_mf | HEVC | Fast |
 | Any (Software fallback) | SVT-AV1 | AV1 | Slower but works everywhere |
 
 **Note for Qualcomm Snapdragon X Elite users:** AV1 hardware encoding is not yet available on Snapdragon. The script automatically falls back to HEVC hardware encoding, which still provides 30-40% compression vs H.264 with fast hardware acceleration.
@@ -147,7 +147,7 @@ The script uses optimized settings for each encoder:
 - Lookahead for better frame analysis
 - Adaptive keyframe placement
 
-### Qualcomm MediaFoundation (HEVC)
+### Microsoft MediaFoundation HEVC (uses Qualcomm HW on Snapdragon)
 ```
 -rate_control quality -quality 70
 ```
