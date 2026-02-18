@@ -6,6 +6,15 @@
 
 $ErrorActionPreference = "Continue"
 
+# Prevent system sleep during long downloads/conversions (allow screen off)
+Add-Type -Name SleepUtil -Namespace "" -MemberDefinition @"
+    [DllImport("kernel32.dll")] public static extern uint SetThreadExecutionState(uint esFlags);
+    public const uint ES_CONTINUOUS       = 0x80000000;
+    public const uint ES_SYSTEM_REQUIRED  = 0x00000001;
+"@
+[SleepUtil]::SetThreadExecutionState([SleepUtil]::ES_CONTINUOUS -bor [SleepUtil]::ES_SYSTEM_REQUIRED) | Out-Null
+Write-Host "[Power] Sleep prevention active (screen may still turn off)"
+
 # Track current state for cleanup on interruption
 $script:CurrentTempFile = $null
 $script:ConversionHistory = $null
@@ -36,6 +45,8 @@ function Invoke-CleanupOnExit {
     }
     
     Write-Host "[INTERRUPTED] Cleanup complete. Run script again to continue."
+    # Release sleep prevention
+    [SleepUtil]::SetThreadExecutionState([SleepUtil]::ES_CONTINUOUS) | Out-Null
 }
 
 # Register Ctrl+C handler
@@ -726,3 +737,7 @@ Write-Log "=========================================="
 
 # Mark clean exit
 $script:InterruptedCleanly = $true
+
+# Release sleep prevention
+[SleepUtil]::SetThreadExecutionState([SleepUtil]::ES_CONTINUOUS) | Out-Null
+Write-Host "[Power] Sleep prevention released"

@@ -19,6 +19,7 @@ Automatically convert large video files to AV1 or HEVC format to reduce OneDrive
 - **Tracks cumulative space saved** across all script runs
 - **Auto-frees local storage** after conversion (sets files to cloud-only)
 - **Safe interruption** - Ctrl+C cleans up temp files and saves progress
+- **Prevents system sleep** - Keeps PC awake during long downloads/conversions (screen may still turn off)
 
 ## Expected Storage Savings
 
@@ -255,6 +256,7 @@ Run the script whenever you have new videos to convert.
 - Checks disk space before starting conversion
 - Checks codec/bitrate before downloading cloud files (saves time and bandwidth)
 - Auto-frees local storage after conversion (OneDrive Files On-Demand)
+- **Prevents system sleep** during long downloads/conversions (screen may still turn off)
 - **Graceful interruption handling** (Ctrl+C or shutdown):
   - Removes incomplete temp files automatically
   - Saves conversion history before exit
